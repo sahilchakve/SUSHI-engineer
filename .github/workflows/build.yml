@@ -1,0 +1,20 @@
+name: Build SUSHI exe
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: pyinstaller --noconfirm --onefile --windowed --name SUSHI --add-data "sushi_study_helper_v46.html;." main.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SUSHI-exe
+          path: dist/SUSHI.exe
